@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>W CAMPUS — Find Your Way | Centre de Formation Nouvelle Génération</title>
+<meta name="description" content="W CAMPUS, le centre de formation qui renverse les codes : 70% action, 30% théorie. Révélez votre talent.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Archivo+Black&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --navy: #011936;
+    --navy-deep: #000f24;
+    --navy-light: #0a2a52;
+    --gold: #e3b23c;
+    --gold-bright: #ffce54;
+    --mint: #eaf2ef;
+    --white: #ffffff;
+    --off: #f4f1ea;
+    --ink: #0a0a0a;
+    --max: 1280px;
+    --ease: cubic-bezier(.16,1,.3,1);
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box;}
+
+  html{scroll-behavior:smooth;}
+
+  body{
+    background:var(--off);
+    color:var(--navy);
+    font-family:'Manrope',sans-serif;
+    overflow-x:hidden;
+    font-feature-settings:"ss01";
+  }
+
+  h1,h2,h3,.display{
+    font-family:'Archivo Black','Manrope',sans-serif;
+    text-transform:uppercase;
+    letter-spacing:-0.01em;
+    line-height:0.95;
+  }
+
+  .num{
+    font-family:'Bebas Neue',sans-serif;
+    letter-spacing:0.04em;
+  }
+
+  a{color:inherit;text-decoration:none;}
+  img{display:block;max-width:100%;}
+  .container{max-width:var(--max);margin:0 auto;padding:0 32px;}
+
+  /* ============ GRAIN / NOISE OVERLAY ============ */
+  .grain{
+    position:fixed;inset:0;pointer-events:none;z-index:9999;
+    opacity:0.035;mix-blend-mode:overlay;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  /* ============ CUSTOM CURSOR DOT ============ */
+  .cursor-dot{
+    position:fixed;width:10px;height:10px;border-radius:50%;
+    background:var(--gold);pointer-events:none;z-index:9998;
+    transform:translate(-50%,-50%);transition:width .25s,height .25s,background .25s;
+    mix-blend-mode:difference;
+  }
+
+  /* ============ TOP BAR / NAV ============ */
+  header{
+    position:fixed;top:0;left:0;right:0;z-index:500;
+    padding:22px 0;
+    transition:background .4s var(--ease), padding .4s var(--ease), box-shadow .4s var(--ease);
+  }
+  header.scrolled{
+    background:rgba(1,25,54,0.92);backdrop-filter:blur(10px);
+    padding:14px 0;box-shadow:0 8px 30px rgba(0,0,0,0.25);
+  }
+  nav{display:flex;align-items:center;justify-content:space-between;}
+  .logo-mark{display:flex;align-items:center;gap:10px;color:var(--white);}
+  .logo-mark svg{height:30px;width:auto;display:block;}
+  .logo-text{font-family:'Archivo Black';font-size:18px;letter-spacing:0.05em;}
+  .logo-text span{color:var(--gold);}
+  .nav-links{display:flex;gap:38px;align-items:center;}
+  .nav-links a{
+    color:var(--mint);font-weight:600;font-size:14px;letter-spacing:0.04em;
+    text-transform:uppercase;position:relative;padding:4px 0;
+  }
+  .nav-links a::after{
+    content:'';position:absolute;left:0;bottom:0;height:2px;width:0;background:var(--gold);
+    transition:width .3s var(--ease);
+  }
+  .nav-links a:hover::after{width:100%;}
+  .nav-cta{
+    background:var(--gold);color:var(--navy-deep)!important;padding:11px 24px!important;
+    border-radius:2px;font-weight:800!important;
+  }
+  .nav-cta::after{display:none;}
+  .burger{display:none;flex-direction:column;gap:5px;cursor:pointer;}
+  .burger span{width:26px;height:2px;background:var(--white);}
+
+  /* ============ HERO ============ */
+  .hero{
+    position:relative;min-height:100vh;display:flex;flex-direction:column;
+    justify-content:center;overflow:hidden;background:var(--navy-deep);
+    isolation:isolate;
+  }
+  .hero-bg{
+    position:absolute;inset:0;z-index:0;
+  }
+  .hero-bg img{
+    width:100%;height:100%;object-fit:cover;
+    filter:grayscale(60%) contrast(1.25) brightness(0.42);
+    transform:scale(1.08);
+    animation:slowzoom 18s ease-out forwards;
+  }
+  @keyframes slowzoom{ from{transform:scale(1.12);} to{transform:scale(1);} }
+  .hero-bg::after{
+    content:'';position:absolute;inset:0;
+    background:
+      linear-gradient(180deg, rgba(1,12,28,0.55) 0%, rgba(1,25,54,0.55) 40%, rgba(1,8,20,0.96) 100%),
+      linear-gradient(100deg, rgba(1,25,54,0.92) 0%, rgba(1,25,54,0.35) 55%, transparent 100%);
+  }
+  .hero-diagonal{
+    position:absolute;right:-10%;top:0;bottom:0;width:55%;
+    background:linear-gradient(160deg, transparent 0%, transparent 38%, var(--gold) 38.3%, var(--gold) 39%, transparent 39.3%);
+    opacity:0.5;z-index:1;pointer-events:none;
+  }
+  .hero-content{position:relative;z-index:2;padding-top:110px;}
+  .eyebrow{
+    display:inline-flex;align-items:center;gap:10px;color:var(--gold);
+    font-weight:800;font-size:13px;letter-spacing:0.22em;text-transform:uppercase;
+    margin-bottom:28px;opacity:0;animation:fadeUp .8s var(--ease) .2s forwards;
+  }
+  .eyebrow .dot{width:7px;height:7px;border-radius:50%;background:var(--gold);animation:pulse 1.8s infinite;}
+  @keyframes pulse{0%,100%{opacity:1;}50%{opacity:.3;}}
+
+  .hero h1{
+    color:var(--white);font-size:clamp(48px, 9vw, 122px);
+    opacity:0;animation:fadeUp 1s var(--ease) .35s forwards;
+  }
+  .hero h1 .line2{
+    color:transparent;-webkit-text-stroke:2px var(--gold);
+    display:block;
+  }
+  .hero .sub{
+    color:var(--mint);font-size:clamp(17px,2vw,21px);font-weight:500;max-width:600px;
+    margin-top:28px;line-height:1.55;opacity:0;animation:fadeUp 1s var(--ease) .55s forwards;
+  }
+  .hero .sub strong{color:var(--gold-bright);font-weight:800;}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(28px);}to{opacity:1;transform:translateY(0);}}
+
+  .hero-actions{
+    display:flex;gap:18px;margin-top:46px;flex-wrap:wrap;
+    opacity:0;animation:fadeUp 1s var(--ease) .75s forwards;
+  }
+  .btn{
+    display:inline-flex;align-items:center;gap:10px;
+    padding:18px 34px;font-weight:800;font-size:14px;letter-spacing:0.06em;text-transform:uppercase;
+    border-radius:2px;cursor:pointer;transition:transform .35s var(--ease), box-shadow .35s var(--ease);
+    border:none;
+  }
+  .btn-primary{
+    background:var(--gold);color:var(--navy-deep);position:relative;overflow:hidden;
+  }
+  .btn-primary:hover{transform:translateY(-4px);box-shadow:0 16px 32px rgba(227,178,60,0.35);}
+  .btn-ghost{
+    background:transparent;color:var(--white);border:1.5px solid rgba(255,255,255,0.4);
+  }
+  .btn-ghost:hover{border-color:var(--gold);color:var(--gold);transform:translateY(-4px);}
+
+  .hero-stats{
+    position:relative;z-index:2;display:flex;gap:0;margin-top:90px;flex-wrap:wrap;
+    border-top:1px solid rgba(255,255,255,0.15);
+  }
+  .stat{padding:26px 48px 10px 0;border-right:1px solid rgba(255,255,255,0.15);flex:1;min-width:160px;}
+  .stat:last-child{border-right:none;}
+  .stat .num{font-size:46px;color:var(--gold);display:block;line-height:1;}
+  .stat .lab{color:var(--mint);font-size:12px;text-transform:uppercase;letter-spacing:0.08em;font-weight:700;margin-top:6px;display:block;}
+
+  .scroll-cue{
+    position:absolute;bottom:32px;left:32px;z-index:2;display:flex;align-items:center;gap:12px;
+    color:var(--mint);font-size:11px;letter-spacing:0.2em;text-transform:uppercase;font-weight:700;
+  }
+  .scroll-cue::before{
+    content:'';width:1px;height:50px;background:linear-gradient(var(--gold),transparent);
+    animation:scrollline 2s infinite;
+  }
+  @keyframes scrollline{0%{transform:scaleY(0);transform-origin:top;}50%{transform:scaleY(1);transform-origin:top;}51%{transform-origin:bottom;}100%{transform:scaleY(0);transform-origin:bottom;}}
+
+  /* ============ MARQUEE ============ */
+  .marquee-wrap{
+    background:var(--gold);overflow:hidden;padding:16px 0;position:relative;z-index:3;
+    border-top:3px solid var(--navy);border-bottom:3px solid var(--navy);
+  }
+  .marquee{display:flex;white-space:nowrap;animation:scroll 26s linear infinite;}
+  .marquee span{
+    font-family:'Archivo Black';font-size:18px;color:var(--navy-deep);
+    padding:0 28px;display:flex;align-items:center;gap:28px;text-transform:uppercase;letter-spacing:0.02em;
+  }
+  @keyframes scroll{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+
+  /* ============ SECTION GENERIC ============ */
+  section{padding:140px 0;position:relative;}
+  .tag{
+    display:inline-flex;align-items:center;gap:10px;font-weight:800;font-size:13px;
+    letter-spacing:0.2em;text-transform:uppercase;color:var(--navy);margin-bottom:22px;
+  }
+  .tag::before{content:'';width:34px;height:2px;background:var(--gold);}
+  .sec-title{font-size:clamp(34px,5vw,64px);color:var(--navy);max-width:820px;}
+  .sec-title .accent{color:var(--gold);-webkit-text-stroke:1px var(--navy);}
+  .reveal{opacity:0;transform:translateY(40px);transition:opacity .9s var(--ease), transform .9s var(--ease);}
+  .reveal.in{opacity:1;transform:translateY(0);}
+
+  /* ============ POURQUOI / MANIFESTO ============ */
+  .manifesto{background:var(--off);}
+  .manifesto-grid{display:grid;grid-template-columns:1.1fr 0.9fr;gap:80px;align-items:start;margin-top:60px;}
+  .manifesto-text p{font-size:19px;line-height:1.75;color:#3a3f47;margin-bottom:22px;}
+  .manifesto-text strong{color:var(--navy);font-weight:800;}
+  .quote-block{
+    background:var(--navy);color:var(--white);padding:48px 40px;position:relative;
+    border-left:6px solid var(--gold);margin-top:8px;
+  }
+  .quote-block p{
+    font-family:'Archivo Black';font-size:22px;line-height:1.35;text-transform:none;color:var(--white);
+  }
+  .quote-block .cite{color:var(--gold);font-size:13px;margin-top:18px;display:block;letter-spacing:0.05em;text-transform:uppercase;font-weight:700;font-family:'Manrope';}
+
+  .flip-cards{display:flex;flex-direction:column;gap:0;}
+  .flip-card{
+    border-top:2px solid var(--navy);padding:30px 0;display:flex;gap:24px;align-items:flex-start;
+    transition:padding-left .3s var(--ease);
+  }
+  .flip-card:hover{padding-left:14px;background:rgba(227,178,60,0.07);}
+  .flip-card:last-child{border-bottom:2px solid var(--navy);}
+  .flip-card .pct{font-family:'Bebas Neue';font-size:54px;color:var(--gold);line-height:1;min-width:110px;}
+  .flip-card h4{font-family:'Archivo Black';font-size:18px;margin-bottom:6px;}
+  .flip-card p{font-size:14.5px;color:#555;line-height:1.5;}
+
+  /* ============ VALEURS ============ */
+  .valeurs{background:var(--navy-deep);color:var(--white);position:relative;overflow:hidden;}
+  .valeurs::before{
+    content:'';position:absolute;top:-20%;right:-10%;width:600px;height:600px;border-radius:50%;
+    background:radial-gradient(circle, rgba(227,178,60,0.12), transparent 70%);
+  }
+  .valeurs .tag{color:var(--gold-bright);}
+  .valeurs .sec-title{color:var(--white);}
+  .valeurs-grid{
+    display:grid;grid-template-columns:repeat(3,1fr);gap:1px;margin-top:70px;
+    background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.12);
+  }
+  .vcard{
+    background:var(--navy-deep);padding:46px 34px;position:relative;
+    transition:background .4s var(--ease);
+  }
+  .vcard:hover{background:var(--navy-light);}
+  .vcard .vnum{font-family:'Bebas Neue';font-size:15px;color:var(--gold);letter-spacing:0.1em;}
+  .vcard h3{font-family:'Archivo Black';font-size:24px;margin:18px 0 14px;color:var(--white);text-transform:none;}
+  .vcard p{font-size:14.5px;color:rgba(234,242,239,0.7);line-height:1.6;}
+  .vcard .bar{position:absolute;left:0;bottom:0;height:3px;width:0;background:var(--gold);transition:width .4s var(--ease);}
+  .vcard:hover .bar{width:100%;}
+
+  /* ============ DOMAINES (image showcase) ============ */
+  .domaines{background:var(--off);}
+  .dom-header{display:flex;justify-content:space-between;align-items:flex-end;gap:40px;flex-wrap:wrap;margin-bottom:60px;}
+  .dom-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;}
+  .dom-card{
+    position:relative;aspect-ratio:3/4;overflow:hidden;border-radius:2px;cursor:pointer;
+    isolation:isolate;
+  }
+  .dom-card img{
+    width:100%;height:100%;object-fit:cover;transition:transform .7s var(--ease), filter .5s var(--ease);
+    filter:grayscale(85%) contrast(1.1) brightness(0.75);
+  }
+  .dom-card:hover img{transform:scale(1.08);filter:grayscale(0%) contrast(1.05) brightness(0.85);}
+  .dom-card::after{
+    content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 30%, rgba(1,25,54,0.92) 100%);z-index:1;
+  }
+  .dom-info{position:absolute;left:0;bottom:0;padding:24px;z-index:2;color:var(--white);}
+  .dom-info .n{font-family:'Bebas Neue';color:var(--gold);font-size:13px;letter-spacing:0.1em;}
+  .dom-info h4{font-family:'Archivo Black';font-size:19px;margin-top:8px;text-transform:uppercase;line-height:1.1;}
+  .dom-card.tall{grid-row:span 2;}
+
+  .dom-list-extra{
+    display:flex;gap:14px;flex-wrap:wrap;margin-top:30px;
+  }
+  .pill{
+    border:1.5px solid var(--navy);padding:10px 22px;border-radius:30px;font-weight:700;font-size:13.5px;
+    text-transform:uppercase;letter-spacing:0.04em;transition:all .3s var(--ease);
+  }
+  .pill:hover{background:var(--navy);color:var(--white);}
+
+  /* ============ METHODE 70/30 ============ */
+  .methode{background:var(--navy);color:var(--white);overflow:hidden;position:relative;}
+  .split-bar{
+    display:flex;height:140px;border-radius:4px;overflow:hidden;margin:60px 0 50px;
+    box-shadow:0 30px 60px rgba(0,0,0,0.3);
+  }
+  .split-action{
+    width:70%;background:var(--gold);display:flex;flex-direction:column;justify-content:center;padding:0 40px;
+    position:relative;
+  }
+  .split-theorie{
+    width:30%;background:var(--mint);display:flex;flex-direction:column;justify-content:center;padding:0 30px;
+    color:var(--navy);
+  }
+  .split-action h3, .split-theorie h3{font-family:'Bebas Neue';font-size:56px;line-height:1;color:var(--navy-deep);}
+  .split-action p, .split-theorie p{font-weight:800;text-transform:uppercase;font-size:13px;letter-spacing:0.08em;color:var(--navy-deep);margin-top:4px;}
+
+  .methode-tools{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(255,255,255,0.15);margin-top:40px;}
+  .tool{background:var(--navy);padding:34px 24px;text-align:left;transition:background .3s;}
+  .tool:hover{background:rgba(227,178,60,0.1);}
+  .tool .ic{font-size:30px;display:block;margin-bottom:14px;}
+  .tool h5{font-family:'Archivo Black';font-size:14.5px;text-transform:uppercase;color:var(--white);}
+
+  /* ============ PARCOURS / TIMELINE ============ */
+  .parcours{background:var(--off);}
+  .timeline{position:relative;margin-top:70px;padding-left:10px;}
+  .timeline::before{content:'';position:absolute;left:30px;top:10px;bottom:10px;width:2px;background:var(--navy);opacity:0.15;}
+  .tl-item{display:flex;gap:34px;padding-bottom:54px;position:relative;}
+  .tl-item:last-child{padding-bottom:0;}
+  .tl-dot{
+    min-width:60px;height:60px;border-radius:50%;background:var(--navy);color:var(--gold);
+    display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue';font-size:24px;
+    position:relative;z-index:1;flex-shrink:0;border:3px solid var(--off);box-shadow:0 0 0 2px var(--navy);
+  }
+  .tl-content h4{font-family:'Archivo Black';font-size:21px;margin-bottom:8px;}
+  .tl-content p{color:#555;font-size:15px;max-width:540px;line-height:1.6;}
+
+  /* ============ PUBLICS ============ */
+  .publics{background:var(--navy-deep);color:white;}
+  .publics .tag{color:var(--gold-bright);}
+  .publics-marquee-row{margin-top:60px;display:flex;flex-direction:column;gap:14px;}
+  .pmarq{display:flex;white-space:nowrap;gap:24px;}
+  .pmarq.r2{animation:scroll 32s linear infinite reverse;}
+  .pmarq.r1{animation:scroll 32s linear infinite;}
+  .pchip{
+    border:1.5px solid rgba(255,255,255,0.25);padding:18px 34px;border-radius:50px;font-weight:700;
+    font-size:16px;display:flex;align-items:center;gap:10px;white-space:nowrap;
+  }
+  .pchip:nth-child(odd){background:var(--gold);color:var(--navy-deep);border-color:var(--gold);}
+
+  /* ============ PREUVE / EXEMPLE ============ */
+  .preuve{background:var(--off);}
+  .preuve-card{
+    background:var(--navy);color:var(--white);border-radius:4px;overflow:hidden;
+    display:grid;grid-template-columns:0.85fr 1.15fr;margin-top:60px;box-shadow:0 40px 80px rgba(1,25,54,0.25);
+  }
+  .preuve-img{position:relative;min-height:420px;}
+  .preuve-img img{width:100%;height:100%;object-fit:cover;filter:grayscale(40%) contrast(1.1);}
+  .preuve-img::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg, transparent 60%, var(--navy) 100%);}
+  .preuve-body{padding:60px;display:flex;flex-direction:column;justify-content:center;}
+  .preuve-body .big-quote-mark{font-family:'Archivo Black';font-size:90px;color:var(--gold);line-height:0.5;margin-bottom:10px;}
+  .preuve-body p{font-size:21px;line-height:1.5;font-weight:600;}
+  .preuve-body .src{margin-top:26px;color:var(--gold-bright);font-weight:800;text-transform:uppercase;font-size:13px;letter-spacing:0.06em;}
+
+  /* ============ CTA FINAL / FORM ============ */
+  .cta-final{
+    background:var(--navy-deep);color:var(--white);position:relative;overflow:hidden;
+  }
+  .cta-final::before{
+    content:'';position:absolute;inset:0;
+    background:repeating-linear-gradient(135deg, rgba(227,178,60,0.04) 0 2px, transparent 2px 40px);
+  }
+  .cta-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;position:relative;z-index:1;}
+  .cta-left h2{font-size:clamp(36px,5.5vw,68px);color:var(--white);}
+  .cta-left h2 .accent{color:var(--gold);}
+  .cta-left p{color:rgba(234,242,239,0.75);font-size:17px;margin-top:24px;line-height:1.6;max-width:480px;}
+  .cta-left .deadline{
+    margin-top:36px;display:inline-flex;align-items:center;gap:14px;
+    border:1.5px solid var(--gold);padding:16px 26px;border-radius:2px;
+  }
+  .cta-left .deadline .num{font-family:'Bebas Neue';font-size:15px;color:var(--gold-bright);letter-spacing:0.06em;}
+
+  form.contact-form{
+    background:var(--white);color:var(--navy);padding:48px;border-radius:4px;
+    box-shadow:0 40px 100px rgba(0,0,0,0.4);
+  }
+  form.contact-form h3{font-family:'Archivo Black';font-size:22px;margin-bottom:8px;}
+  form.contact-form .sub{color:#666;font-size:14px;margin-bottom:30px;}
+  .field{margin-bottom:20px;}
+  .field label{display:block;font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:8px;color:var(--navy);}
+  .field input, .field select, .field textarea{
+    width:100%;border:none;border-bottom:2px solid #d8d4c8;background:transparent;
+    padding:12px 4px;font-family:'Manrope';font-size:15px;color:var(--navy);
+    transition:border-color .3s;
+  }
+  .field input:focus, .field select:focus, .field textarea:focus{outline:none;border-color:var(--gold);}
+  .field-row{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+  .submit-btn{
+    width:100%;background:var(--navy);color:var(--white);padding:18px;border:none;
+    font-weight:800;text-transform:uppercase;letter-spacing:0.06em;font-size:14px;border-radius:2px;
+    cursor:pointer;margin-top:10px;transition:background .3s, transform .3s;
+  }
+  .submit-btn:hover{background:var(--gold);color:var(--navy-deep);transform:translateY(-2px);}
+  .form-note{font-size:11.5px;color:#999;margin-top:14px;text-align:center;}
+  .form-success{
+    display:none;text-align:center;padding:40px 0;
+  }
+  .form-success.show{display:block;}
+  .form-success .check{font-size:50px;color:var(--gold);margin-bottom:14px;}
+  .form-success h3{font-family:'Archivo Black';font-size:22px;color:var(--navy);}
+  .form-success p{color:#666;margin-top:8px;font-size:14px;}
+
+  /* ============ FOOTER ============ */
+  footer{background:var(--navy-deep);color:rgba(234,242,239,0.6);padding:60px 0 30px;border-top:1px solid rgba(255,255,255,0.08);}
+  .footer-top{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:40px;padding-bottom:40px;border-bottom:1px solid rgba(255,255,255,0.08);}
+  .footer-brand{max-width:320px;}
+  .footer-brand .logo-text{color:var(--white);font-size:20px;}
+  .footer-brand p{margin-top:16px;font-size:14px;line-height:1.6;}
+  .footer-cols{display:flex;gap:60px;flex-wrap:wrap;}
+  .footer-col h5{color:var(--gold);font-size:12.5px;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:16px;font-weight:800;}
+  .footer-col a, .footer-col p{display:block;font-size:14px;margin-bottom:10px;color:rgba(234,242,239,0.65);}
+  .footer-bottom{display:flex;justify-content:space-between;padding-top:26px;font-size:12.5px;flex-wrap:wrap;gap:10px;}
+
+  /* ============ RESPONSIVE ============ */
+  @media (max-width: 980px){
+    .nav-links{display:none;}
+    .burger{display:flex;}
+    .manifesto-grid{grid-template-columns:1fr;gap:40px;}
+    .valeurs-grid{grid-template-columns:1fr 1fr;}
+    .dom-grid{grid-template-columns:1fr 1fr;}
+    .dom-card.tall{grid-row:span 1;}
+    .methode-tools{grid-template-columns:1fr 1fr;}
+    .preuve-card{grid-template-columns:1fr;}
+    .preuve-img{min-height:260px;}
+    .cta-grid{grid-template-columns:1fr;gap:50px;}
+    .hero-stats{margin-top:60px;}
+  }
+  @media (max-width: 600px){
+    section{padding:90px 0;}
+    .valeurs-grid{grid-template-columns:1fr;}
+    .dom-grid{grid-template-columns:1fr 1fr;}
+    .field-row{grid-template-columns:1fr;}
+    .stat{flex:1 1 45%;padding:20px 20px 10px 0;}
+    .hero-diagonal{display:none;}
+    form.contact-form{padding:30px 24px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="grain"></div>
+<div class="cursor-dot" id="cursorDot"></div>
+
+<!-- ============ HEADER ============ -->
+<header id="header">
+  <div class="container">
+    <nav>
+      <a href="#top" class="logo-mark">
+        <svg viewBox="0 0 60 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M4 6C14 6 14 30 24 30C30 30 28 14 36 14C44 14 42 30 56 12" stroke="white" stroke-width="3" stroke-linecap="round"/>
+        </svg>
+        <span class="logo-text">CAMPUS<span>.</span></span>
+      </a>
+      <div class="nav-links">
+        <a href="#manifesto">Le Pourquoi</a>
+        <a href="#valeurs">Valeurs</a>
+        <a href="#domaines">Domaines</a>
+        <a href="#methode">Méthode</a>
+        <a href="#contact" class="nav-cta">Rejoindre</a>
+      </div>
+      <div class="burger" id="burger"><span></span><span></span><span></span></div>
+    </nav>
+  </div>
+</header>
+
+<!-- ============ HERO ============ -->
+<section class="hero" id="top">
+  <div class="hero-bg">
+    <img src="https://images.stockcake.com/public/c/0/3/c030c0a9-0c69-4f3b-9cd2-8a1a6dc66e60_large/dramatic-track-sprint-stockcake.jpg" alt="Athlète en pleine action">
+  </div>
+  <div class="hero-diagonal"></div>
+
+  <div class="container hero-content">
+    <span class="eyebrow"><span class="dot"></span> Ouverture Septembre 2026 — Nîmes</span>
+    <h1>ARRÊTE<br>D'APPRENDRE.<br><span class="line2">COMMENCE À FAIRE.</span></h1>
+    <p class="sub">W CAMPUS est le centre de formation qui renverse le modèle : <strong>70% action, 30% théorie.</strong> Un écosystème né de l'expérience terrain du groupe MAKE IT NOW, pour révéler les talents que l'école traditionnelle ignore.</p>
+    <div class="hero-actions">
+      <a href="#contact" class="btn btn-primary">Rejoindre l'aventure →</a>
+      <a href="#manifesto" class="btn btn-ghost">Découvrir le Pourquoi</a>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="hero-stats">
+      <div class="stat"><span class="num">70%</span><span class="lab">Pratique terrain</span></div>
+      <div class="stat"><span class="num">6+</span><span class="lab">Domaines de formation</span></div>
+      <div class="stat"><span class="num">100%</span><span class="lab">Accompagnement individualisé</span></div>
+      <div class="stat"><span class="num">2026</span><span class="lab">Ouverture à Nîmes</span></div>
+    </div>
+  </div>
+
+  <span class="scroll-cue">Scroll</span>
+</section>
+
+<!-- ============ MARQUEE ============ -->
+<div class="marquee-wrap">
+  <div class="marquee">
+    <span>FORMER ★ TRANSFORMER ★ PROPULSER ★ FIND YOUR WAY ★ FORMER ★ TRANSFORMER ★ PROPULSER ★ FIND YOUR WAY ★ FORMER ★ TRANSFORMER ★ PROPULSER ★ FIND YOUR WAY ★</span>
+    <span>FORMER ★ TRANSFORMER ★ PROPULSER ★ FIND YOUR WAY ★ FORMER ★ TRANSFORMER ★ PROPULSER ★ FIND YOUR WAY ★ FORMER ★ TRANSFORMER ★ PROPULSER ★ FIND YOUR WAY ★</span>
+  </div>
+</div>
+
+<!-- ============ MANIFESTO / POURQUOI ============ -->
+<section class="manifesto" id="manifesto">
+  <div class="container">
+    <span class="tag reveal">Le Pourquoi</span>
+    <h2 class="sec-title reveal">On a vu des gens sans diplôme <span class="accent">diriger</span> des établissements à plusieurs millions.</h2>
+
+    <div class="manifesto-grid">
+      <div class="manifesto-text reveal">
+        <p>Ce n'est pas une légende. C'est arrivé chez nous, dans l'écosystème <strong>MAKE IT NOW</strong>. Des personnes sans expérience, sans parcours scolaire classique, qui ont gravi les échelons par l'action, la pratique, le terrain — jusqu'à diriger des structures générant plusieurs millions de chiffre d'affaires.</p>
+        <p>On a regardé le modèle de formation classique : <strong>beaucoup de théorie, peu de pratique.</strong> Et on s'est dit : si ça a marché pour eux par l'action, pourquoi continuer à former les autres par les livres ?</p>
+        <p>Alors on a renversé la formule. <strong>W CAMPUS</strong> existe pour transmettre ce qui a fonctionné — pas une méthode théorique, une méthode vécue.</p>
+      </div>
+
+      <div class="quote-block reveal">
+        <p>"On ne veut pas former des diplômés. On veut révéler des talents — et les embaucher."</p>
+        <span class="cite">— L'ambition W CAMPUS</span>
+      </div>
+    </div>
+
+    <div class="flip-cards reveal" style="margin-top:70px;">
+      <div class="flip-card">
+        <span class="pct">70%</span>
+        <div><h4>Pratique terrain</h4><p>Études de cas réels, mises en situation, immersion. On apprend en faisant, pas en écoutant.</p></div>
+      </div>
+      <div class="flip-card">
+        <span class="pct">30%</span>
+        <div><h4>Théorie & débriefing</h4><p>Le socle nécessaire pour comprendre, structurer et ancrer durablement les compétences acquises sur le terrain.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ VALEURS ============ -->
+<section class="valeurs" id="valeurs">
+  <div class="container">
+    <span class="tag reveal">Notre ADN</span>
+    <h2 class="sec-title reveal">Quatre piliers. <span class="accent" style="-webkit-text-stroke:1px var(--gold);color:var(--navy-deep);">Aucun compromis.</span></h2>
+
+    <div class="valeurs-grid reveal">
+      <div class="vcard">
+        <span class="vnum">01 / ACTION</span>
+        <h3>Excellence par l'action</h3>
+        <p>Aucune compétence n'est validée en théorie. Tout se prouve sur le terrain, en situation réelle.</p>
+        <div class="bar"></div>
+      </div>
+      <div class="vcard">
+        <span class="vnum">02 / NIVEAU</span>
+        <h3>Excellence pédagogique</h3>
+        <p>Méthodes modernes, interactives, exigeantes — pensées pour produire un impact mesurable et durable.</p>
+        <div class="bar"></div>
+      </div>
+      <div class="vcard">
+        <span class="vnum">03 / TERRAIN</span>
+        <h3>Professionnalisation</h3>
+        <p>Des contenus directement connectés aux réalités et aux attentes concrètes des entreprises.</p>
+        <div class="bar"></div>
+      </div>
+      <div class="vcard">
+        <span class="vnum">04 / RUPTURE</span>
+        <h3>Innovation permanente</h3>
+        <p>Neuro-training, gamification, intelligence collective. On forme avec les outils d'aujourd'hui.</p>
+        <div class="bar"></div>
+      </div>
+      <div class="vcard">
+        <span class="vnum">05 / HUMAIN</span>
+        <h3>Bienveillance exigeante</h3>
+        <p>Un accompagnement individualisé, dans un cadre respectueux — sans jamais baisser le niveau d'ambition.</p>
+        <div class="bar"></div>
+      </div>
+      <div class="vcard">
+        <span class="vnum">06 / OUVERT</span>
+        <h3>Accessibilité</h3>
+        <p>Le talent ne demande pas de diplôme. Nos formations sont pensées pour tous, y compris en situation de handicap.</p>
+        <div class="bar"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ DOMAINES ============ -->
+<section class="domaines" id="domaines">
+  <div class="container">
+    <div class="dom-header">
+      <div>
+        <span class="tag reveal">Nos domaines</span>
+        <h2 class="sec-title reveal">Là où l'action <span class="accent">paie.</span></h2>
+      </div>
+      <p class="reveal" style="max-width:380px;color:#555;font-size:15.5px;line-height:1.6;">Des terrains de jeu choisis pour leur fort potentiel d'apprentissage par l'action et leur connexion directe à l'entrepreneuriat.</p>
+    </div>
+
+    <div class="dom-grid reveal">
+      <div class="dom-card tall">
+        <img src="https://images.stockcake.com/public/9/8/1/9810ee4e-d9c0-4d4b-9f0e-6b2c2f04ba5d_large/power-in-motion-stockcake.jpg" alt="Sport et performance">
+        <div class="dom-info"><span class="n">01</span><h4>Sport & Animation</h4></div>
+      </div>
+      <div class="dom-card">
+        <img src="https://images.stockcake.com/public/7/0/6/706f6a0d-29cc-4e8c-b1f8-baf3eb4b62a8_large/speed-in-motion-stockcake.jpg" alt="Leadership et management">
+        <div class="dom-info"><span class="n">02</span><h4>Management & Leadership</h4></div>
+      </div>
+      <div class="dom-card tall">
+        <img src="https://images.stockcake.com/public/2/c/9/2c95ee0b-685e-4eaa-9587-37c64a76f6e0_large/intense-race-action-stockcake.jpg" alt="Communication">
+        <div class="dom-info"><span class="n">03</span><h4>Communication</h4></div>
+      </div>
+      <div class="dom-card">
+        <img src="https://images.stockcake.com/public/c/0/3/c030c0a9-0c69-4f3b-9cd2-8a1a6dc66e60_large/dramatic-track-sprint-stockcake.jpg" alt="Entrepreneuriat">
+        <div class="dom-info"><span class="n">04</span><h4>Entrepreneuriat</h4></div>
+      </div>
+    </div>
+
+    <div class="dom-list-extra reveal">
+      <span class="pill">Développement personnel</span>
+      <span class="pill">Soft Skills</span>
+      <span class="pill">Certifications professionnelles</span>
+      <span class="pill">Dispositifs AFEST</span>
+      <span class="pill">Parcours digitalisés</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============ METHODE ============ -->
+<section class="methode" id="methode">
+  <div class="container">
+    <span class="tag reveal" style="color:var(--gold-bright);">La méthode</span>
+    <h2 class="sec-title reveal" style="color:white;">On a renversé <span class="accent">l'équation.</span></h2>
+
+    <div class="split-bar reveal">
+      <div class="split-action"><h3>70%</h3><p>Action / Terrain</p></div>
+      <div class="split-theorie"><h3>30%</h3><p>Théorie / Débrief</p></div>
+    </div>
+
+    <p class="reveal" style="color:rgba(234,242,239,0.75);max-width:640px;font-size:16.5px;line-height:1.6;">Études de cas réels, mises en situation, immersion terrain, jeux de rôle, coaching individuel — chaque méthode est choisie pour produire un impact concret, mesurable, immédiatement mobilisable.</p>
+
+    <div class="methode-tools reveal">
+      <div class="tool"><span class="ic">🎯</span><h5>Mises en situation</h5></div>
+      <div class="tool"><span class="ic">🤝</span><h5>Coaching individuel</h5></div>
+      <div class="tool"><span class="ic">🧠</span><h5>Neuro-training</h5></div>
+      <div class="tool"><span class="ic">🎮</span><h5>Gamification</h5></div>
+      <div class="tool"><span class="ic">💡</span><h5>Intelligence collective</h5></div>
+      <div class="tool"><span class="ic">🎭</span><h5>Jeux de rôle</h5></div>
+      <div class="tool"><span class="ic">🔍</span><h5>Analyse des pratiques</h5></div>
+      <div class="tool"><span class="ic">📋</span><h5>Études de cas réels</h5></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PARCOURS ============ -->
+<section class="parcours">
+  <div class="container">
+    <span class="tag reveal">Votre parcours</span>
+    <h2 class="sec-title reveal">Un accompagnement, <span class="accent">zéro pilotage automatique.</span></h2>
+
+    <div class="timeline reveal">
+      <div class="tl-item"><div class="tl-dot">01</div><div class="tl-content"><h4>Analyse des besoins</h4><p>On comprend d'où vous venez et où vous voulez aller — avant même de parler formation.</p></div></div>
+      <div class="tl-item"><div class="tl-dot">02</div><div class="tl-content"><h4>Positionnement pédagogique</h4><p>Un parcours calibré sur votre profil réel, pas sur un programme générique.</p></div></div>
+      <div class="tl-item"><div class="tl-dot">03</div><div class="tl-content"><h4>Suivi de progression</h4><p>Des points réguliers pour ajuster le rythme et sécuriser chaque étape.</p></div></div>
+      <div class="tl-item"><div class="tl-dot">04</div><div class="tl-content"><h4>Échanges avec le formateur</h4><p>Un accès direct, humain, sans barrière hiérarchique.</p></div></div>
+      <div class="tl-item"><div class="tl-dot">05</div><div class="tl-content"><h4>Évaluation continue</h4><p>Quiz, mises en situation, productions concrètes — la preuve par l'action, pas par l'examen.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PUBLICS ============ -->
+<section class="publics">
+  <div class="container">
+    <span class="tag reveal">Pour qui</span>
+    <h2 class="sec-title reveal" style="color:white;">Le talent n'a pas besoin <span class="accent">d'un CV parfait.</span></h2>
+  </div>
+
+  <div class="publics-marquee-row reveal">
+    <div class="pmarq r1">
+      <span class="pchip">Salariés en formation continue</span>
+      <span class="pchip">Demandeurs d'emploi</span>
+      <span class="pchip">Entrepreneurs & indépendants</span>
+      <span class="pchip">Étudiants</span>
+      <span class="pchip">Personnes en reconversion</span>
+      <span class="pchip">Entreprises</span>
+      <span class="pchip">Salariés en formation continue</span>
+      <span class="pchip">Demandeurs d'emploi</span>
+      <span class="pchip">Entrepreneurs & indépendants</span>
+      <span class="pchip">Étudiants</span>
+    </div>
+    <div class="pmarq r2">
+      <span class="pchip">Entreprises (formation équipes)</span>
+      <span class="pchip">Personnes en reconversion</span>
+      <span class="pchip">Étudiants</span>
+      <span class="pchip">Entrepreneurs & indépendants</span>
+      <span class="pchip">Demandeurs d'emploi</span>
+      <span class="pchip">Salariés en formation continue</span>
+      <span class="pchip">Entreprises (formation équipes)</span>
+      <span class="pchip">Personnes en reconversion</span>
+      <span class="pchip">Étudiants</span>
+      <span class="pchip">Entrepreneurs & indépendants</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PREUVE ============ -->
+<section class="preuve">
+  <div class="container">
+    <span class="tag reveal">La preuve par l'exemple</span>
+    <h2 class="sec-title reveal">Ce n'est pas une promesse marketing. <span class="accent">C'est déjà arrivé.</span></h2>
+
+    <div class="preuve-card reveal">
+      <div class="preuve-img">
+        <img src="https://images.stockcake.com/public/2/c/9/2c95ee0b-685e-4eaa-9587-37c64a76f6e0_large/intense-race-action-stockcake.jpg" alt="Réussite par l'action">
+      </div>
+      <div class="preuve-body">
+        <span class="big-quote-mark">"</span>
+        <p>Sans diplôme, sans expérience formelle — un manager de notre écosystème dirige aujourd'hui un établissement qui génère plusieurs millions de chiffre d'affaires.</p>
+        <span class="src">Écosystème Make It Now</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CTA FINAL + FORM ============ -->
+<section class="cta-final" id="contact">
+  <div class="container">
+    <div class="cta-grid">
+      <div class="cta-left reveal">
+        <span class="tag" style="color:var(--gold-bright);">Rejoignez-nous</span>
+        <h2>Find Your <span class="accent">Way.</span></h2>
+        <p>Laissez-nous vos coordonnées. On vous recontacte pour vous présenter le programme, le calendrier et les modalités d'admission avant l'ouverture officielle.</p>
+        <div class="deadline">
+          <span class="num">🚀 OUVERTURE PRÉVUE</span>
+          <span style="color:var(--mint);font-weight:700;">Septembre 2026 — places limitées</span>
+        </div>
+      </div>
+
+      <div class="reveal">
+        <form class="contact-form" id="contactForm">
+          <div id="formFields">
+            <h3>Pré-inscription</h3>
+            <p class="sub">2 minutes pour faire le premier pas.</p>
+
+            <div class="field-row">
+              <div class="field">
+                <label for="prenom">Prénom</label>
+                <input type="text" id="prenom" name="prenom" required>
+              </div>
+              <div class="field">
+                <label for="nom">Nom</label>
+                <input type="text" id="nom" name="nom" required>
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="email">Email</label>
+              <input type="email" id="email" name="email" required>
+            </div>
+
+            <div class="field">
+              <label for="tel">Téléphone</label>
+              <input type="tel" id="tel" name="tel">
+            </div>
+
+            <div class="field">
+              <label for="profil">Vous êtes</label>
+              <select id="profil" name="profil">
+                <option>Salarié en formation continue</option>
+                <option>Demandeur d'emploi</option>
+                <option>Entrepreneur / indépendant</option>
+                <option>Étudiant</option>
+                <option>En reconversion professionnelle</option>
+                <option>Entreprise (formation équipes)</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label for="domaine">Domaine qui vous intéresse</label>
+              <select id="domaine" name="domaine">
+                <option>Sport & Animation</option>
+                <option>Management & Leadership</option>
+                <option>Communication</option>
+                <option>Entrepreneuriat</option>
+                <option>Développement personnel</option>
+                <option>Soft Skills</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label for="message">Message (facultatif)</label>
+              <textarea id="message" name="message" rows="3"></textarea>
+            </div>
+
+            <button type="submit" class="submit-btn">Envoyer ma demande →</button>
+            <p class="form-note">Vos données restent confidentielles et ne sont utilisées que pour vous recontacter.</p>
+          </div>
+
+          <div class="form-success" id="formSuccess">
+            <div class="check">✓</div>
+            <h3>Demande envoyée !</h3>
+            <p>Notre équipe vous recontacte très vite pour la suite.</p>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <span class="logo-text">CAMPUS<span style="color:var(--gold);">.</span></span>
+        <p>Centre de formation innovant, professionnalisant et centré sur l'humain. Former · Transformer · Propulser.</p>
+      </div>
+      <div class="footer-cols">
+        <div class="footer-col">
+          <h5>Navigation</h5>
+          <a href="#manifesto">Le Pourquoi</a>
+          <a href="#valeurs">Valeurs</a>
+          <a href="#domaines">Domaines</a>
+          <a href="#methode">Méthode</a>
+        </div>
+        <div class="footer-col">
+          <h5>Contact</h5>
+          <p>wcampus@makeitnow.live</p>
+          <p>105 Rue Claude Nicolas Ledoux</p>
+          <p>30900 Nîmes, France</p>
+        </div>
+        <div class="footer-col">
+          <h5>Groupe</h5>
+          <p>Make It Now Group</p>
+          <a href="#contact">Pré-inscription</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 W CAMPUS — Tous droits réservés</span>
+      <span>Find Your Way</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Header scroll state
+  const header = document.getElementById('header');
+  window.addEventListener('scroll', () => {
+    header.classList.toggle('scrolled', window.scrollY > 40);
+  });
+
+  // Cursor dot (desktop only)
+  const dot = document.getElementById('cursorDot');
+  if(window.matchMedia('(pointer: fine)').matches){
+    window.addEventListener('mousemove', e => {
+      dot.style.left = e.clientX + 'px';
+      dot.style.top = e.clientY + 'px';
+    });
+    document.querySelectorAll('a, button, .dom-card, .vcard').forEach(el=>{
+      el.addEventListener('mouseenter', ()=>{ dot.style.width='28px'; dot.style.height='28px'; });
+      el.addEventListener('mouseleave', ()=>{ dot.style.width='10px'; dot.style.height='10px'; });
+    });
+  } else {
+    dot.style.display='none';
+  }
+
+  // Scroll reveal
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting){
+        entry.target.classList.add('in');
+        io.unobserve(entry.target);
+      }
+    });
+  }, {threshold:0.15});
+  revealEls.forEach(el=>io.observe(el));
+
+  // Mobile menu (simple toggle -> scroll to contact, basic burger just smooth-scrolls nav open state)
+  const burger = document.getElementById('burger');
+  burger.addEventListener('click', ()=>{
+    document.querySelector('.nav-links').style.display =
+      document.querySelector('.nav-links').style.display === 'flex' ? 'none' : 'flex';
+    const nl = document.querySelector('.nav-links');
+    nl.style.position='fixed'; nl.style.top='70px'; nl.style.right='20px';
+    nl.style.background='var(--navy)'; nl.style.flexDirection='column'; nl.style.padding='24px';
+    nl.style.borderRadius='4px'; nl.style.boxShadow='0 20px 40px rgba(0,0,0,0.3)'; nl.style.zIndex='600';
+  });
+
+  // Form submit (front-end only demo)
+  document.getElementById('contactForm').addEventListener('submit', function(e){
+    e.preventDefault();
+    document.getElementById('formFields').style.display='none';
+    document.getElementById('formSuccess').classList.add('show');
+  });
+</script>
+
+</body>
+</html>
