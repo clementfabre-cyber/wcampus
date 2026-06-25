@@ -74,6 +74,14 @@
     *{animation-duration:0.01ms !important;animation-iteration-count:1 !important;transition-duration:0.01ms !important;}
   }
 
+  /* ============ IMAGE FALLBACK ============ */
+  /* Any <img> that fails to load is fully hidden (no native browken-image
+     icon, no alt text spill) and the parent's own background shows through
+     as a brand-colored placeholder instead. */
+  img.img-error{
+    visibility:hidden;
+  }
+
   /* ============ HEADER ============ */
   header{
     position:fixed;top:0;left:0;right:0;z-index:40;padding:22px 0;
@@ -133,13 +141,18 @@
 
   .hero-faces{display:flex;align-items:center;gap:14px;margin-top:42px;opacity:0;animation:fadeUp 1s var(--ease) .85s forwards;}
   .face-stack{display:flex;}
-  .face-stack img{width:42px;height:42px;border-radius:50%;border:3px solid var(--navy-deep);object-fit:cover;margin-left:-13px;}
-  .face-stack img:first-child{margin-left:0;}
+  .avatar{
+    display:block;width:42px;height:42px;border-radius:50%;margin-left:-13px;
+    background:linear-gradient(135deg, var(--gold-soft), var(--gold-deep));
+    border:3px solid var(--navy-deep);overflow:hidden;
+  }
+  .avatar:first-child{margin-left:0;}
+  .face-stack img{width:100%;height:100%;object-fit:cover;display:block;}
   .hero-faces .ftext{color:var(--mint);font-size:13px;font-weight:600;line-height:1.3;}
   .hero-faces .ftext strong{color:var(--gold-soft);}
 
   .hero-visual{position:relative;height:520px;}
-  .hv-card{position:absolute;border-radius:24px;overflow:hidden;box-shadow:0 28px 56px rgba(0,0,0,0.4);border:4px solid rgba(255,255,255,0.06);}
+  .hv-card{position:absolute;border-radius:24px;overflow:hidden;box-shadow:0 28px 56px rgba(0,0,0,0.4);border:4px solid rgba(255,255,255,0.06);background:linear-gradient(135deg, var(--navy-light), var(--navy));}
   .hv-card img{width:100%;height:100%;object-fit:cover;}
   .hv1{width:62%;height:60%;top:0;right:0;z-index:2;}
   .hv2{width:46%;height:40%;bottom:0;left:0;z-index:3;}
@@ -176,7 +189,7 @@
   .manifesto-text strong{color:var(--navy);font-weight:800;}
 
   .human-quote{background:var(--navy);color:var(--white);border-radius:22px;overflow:hidden;position:relative;box-shadow:0 26px 52px rgba(1,25,54,0.2);}
-  .human-quote .photo{height:200px;position:relative;}
+  .human-quote .photo{height:200px;position:relative;background:linear-gradient(135deg, var(--navy-light), var(--navy));}
   .human-quote .photo img{width:100%;height:100%;object-fit:cover;}
   .human-quote .photo::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 45%, var(--navy) 100%);}
   .human-quote .body{padding:30px 32px 34px;}
@@ -210,8 +223,8 @@
   .pillar-feature h3{font-family:'Archivo Black';font-size:32px;margin:16px 0 14px;color:var(--white);text-transform:none;letter-spacing:-0.015em;line-height:1.05;position:relative;z-index:1;}
   .pillar-feature p{font-size:15.5px;color:rgba(234,242,239,0.78);line-height:1.6;max-width:36ch;position:relative;z-index:1;}
   .pillar-feature .big-mark{
-    position:absolute;bottom:-30px;right:-10px;font-family:'Bebas Neue';font-size:200px;color:rgba(255,255,255,0.04);
-    line-height:1;z-index:0;
+    position:absolute;top:-18px;right:-6px;font-family:'Bebas Neue';font-size:168px;color:rgba(255,255,255,0.06);
+    line-height:1;z-index:0;pointer-events:none;
   }
 
   .pillar-list{display:flex;flex-direction:column;gap:1px;background:rgba(1,25,54,0.08);border-radius:24px;overflow:hidden;}
@@ -228,7 +241,7 @@
   .visages{background:var(--off);}
   .vis-header{display:flex;justify-content:space-between;align-items:flex-end;gap:36px;flex-wrap:wrap;margin-bottom:50px;}
   .vis-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;}
-  .vis-card{position:relative;border-radius:18px;overflow:hidden;aspect-ratio:3/4;isolation:isolate;cursor:pointer;}
+  .vis-card{position:relative;border-radius:18px;overflow:hidden;aspect-ratio:3/4;isolation:isolate;cursor:pointer;background:linear-gradient(135deg, var(--navy-light), var(--navy));}
   .vis-card img{width:100%;height:100%;object-fit:cover;transition:transform .6s var(--ease);}
   .vis-card:hover img{transform:scale(1.05);}
   .vis-card::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 38%, rgba(1,25,54,0.9) 100%);z-index:1;}
@@ -242,7 +255,7 @@
   .domaines .tag{color:var(--gold-soft);}
   .domaines .sec-title{color:var(--white);}
   .dom-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:50px;}
-  .dom-card{border-radius:20px;overflow:hidden;position:relative;min-height:260px;display:flex;align-items:flex-end;isolation:isolate;}
+  .dom-card{border-radius:20px;overflow:hidden;position:relative;min-height:260px;display:flex;align-items:flex-end;isolation:isolate;background:linear-gradient(135deg, var(--navy-light), var(--navy));}
   .dom-card img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;}
   .dom-card::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg, rgba(1,25,54,0.05) 0%, rgba(1,25,54,0.95) 100%);z-index:1;}
   .dom-card-body{position:relative;z-index:2;padding:24px;}
@@ -259,14 +272,14 @@
   .split-bar{display:flex;height:120px;border-radius:20px;overflow:hidden;margin:50px 0 46px;box-shadow:0 24px 48px rgba(1,25,54,0.1);}
   .split-action{width:70%;background:var(--gold);display:flex;flex-direction:column;justify-content:center;padding:0 34px;}
   .split-theorie{width:30%;background:var(--navy);display:flex;flex-direction:column;justify-content:center;padding:0 26px;color:var(--white);}
-  .split-action h3{font-family:'Bebas Neue';font-size:46px;line-height:1;color:var(--navy-deep);}
-  .split-theorie h3{font-family:'Bebas Neue';font-size:46px;line-height:1;color:var(--white);}
+  .split-action h3{font-family:'Bebas Neue';font-size:clamp(26px, 6vw, 46px);line-height:1;color:var(--navy-deep);}
+  .split-theorie h3{font-family:'Bebas Neue';font-size:clamp(26px, 6vw, 46px);line-height:1;color:var(--white);}
   .split-action p, .split-theorie p{font-weight:800;text-transform:uppercase;font-size:12px;letter-spacing:0.05em;margin-top:4px;}
   .split-action p{color:var(--navy-deep);}
   .split-theorie p{color:rgba(255,255,255,0.75);}
 
   .methode-grid{display:grid;grid-template-columns:1fr 1fr;gap:54px;align-items:center;margin-top:54px;}
-  .methode-photo{border-radius:24px;overflow:hidden;height:400px;box-shadow:0 26px 52px rgba(1,25,54,0.15);}
+  .methode-photo{border-radius:24px;overflow:hidden;height:400px;box-shadow:0 26px 52px rgba(1,25,54,0.15);background:linear-gradient(135deg, var(--navy-light), var(--navy));}
   .methode-photo img{width:100%;height:100%;object-fit:cover;}
   .methode-intro{color:#33414c;font-size:16px;line-height:1.65;margin-bottom:24px;max-width:48ch;}
   .methode-tools{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
@@ -292,13 +305,14 @@
   .publics-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:48px;}
   .pub-card{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:18px;padding:26px 22px;display:flex;align-items:center;gap:16px;transition:background .3s;}
   .pub-card:hover{background:rgba(255,255,255,0.08);}
-  .pub-card img{width:52px;height:52px;border-radius:50%;object-fit:cover;flex-shrink:0;border:2px solid rgba(255,255,255,0.15);}
+  .avatar-md{width:52px;height:52px;border:2px solid rgba(255,255,255,0.15);flex-shrink:0;}
+  .pub-card img{width:100%;height:100%;object-fit:cover;display:block;}
   .pub-card span{font-weight:700;font-size:14.5px;line-height:1.3;}
 
   /* ============ TÉMOIGNAGE / PREUVE ============ */
   .preuve{background:var(--off);}
   .preuve-card{background:var(--navy);color:var(--white);border-radius:26px;overflow:hidden;display:grid;grid-template-columns:0.85fr 1.15fr;margin-top:50px;box-shadow:0 36px 72px rgba(1,25,54,0.2);}
-  .preuve-img{position:relative;min-height:400px;}
+  .preuve-img{position:relative;min-height:400px;background:linear-gradient(135deg, var(--navy-light), var(--navy));}
   .preuve-img img{width:100%;height:100%;object-fit:cover;}
   .preuve-body{padding:52px;display:flex;flex-direction:column;justify-content:center;}
   .preuve-body .big-quote-mark{font-family:'Fraunces';font-style:italic;font-size:70px;color:var(--gold-soft);line-height:0.4;margin-bottom:6px;}
@@ -347,7 +361,9 @@
     .nav-links{display:none;}
     .burger{display:flex;}
     .hero-grid{grid-template-columns:1fr;}
-    .hero-visual{height:360px;margin-top:16px;}
+    .hero-visual{height:280px;margin-top:8px;}
+    .hv1{width:100%;height:100%;top:0;right:0;left:0;border-radius:20px;}
+    .hv2,.hv-badge{display:none;}
     .manifesto-grid{grid-template-columns:1fr;gap:32px;}
     .pillars-layout{grid-template-columns:1fr;}
     .pillar-feature{min-height:280px;}
@@ -369,13 +385,19 @@
     .publics-grid{grid-template-columns:1fr;}
     .field-row{grid-template-columns:1fr;}
     form.contact-form{padding:26px 20px;}
-    .hv-badge{display:none;}
+    .hero-visual{height:220px;}
     .blob1,.blob2{display:none;}
+    .split-bar{height:auto;}
+    .split-action{padding:22px 20px;}
+    .split-theorie{padding:22px 18px;}
   }
 </style>
 </head>
 <body>
 
+<noscript>
+  <style>.reveal{opacity:1!important;transform:none!important;}</style>
+</noscript>
 <div class="grain"></div>
 <div class="cursor-dot" id="cursorDot"></div>
 
@@ -418,9 +440,9 @@
         </div>
         <div class="hero-faces">
           <div class="face-stack">
-            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=faces" alt="Apprenant W CAMPUS">
-            <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop&crop=faces" alt="Apprenant W CAMPUS">
-            <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop&crop=faces" alt="Apprenant W CAMPUS">
+            <span class="avatar"><img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=faces" alt="Apprenant W CAMPUS"></span>
+            <span class="avatar"><img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop&crop=faces" alt="Apprenant W CAMPUS"></span>
+            <span class="avatar"><img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop&crop=faces" alt="Apprenant W CAMPUS"></span>
           </div>
           <span class="ftext">Déjà des dizaines de talents<br>prêts à <strong>Find Their Way</strong></span>
         </div>
@@ -604,7 +626,7 @@
 
     <div class="split-bar reveal">
       <div class="split-action"><h3>70%</h3><p>Action / Terrain</p></div>
-      <div class="split-theorie"><h3>30%</h3><p>Théorie / Débrief</p></div>
+      <div class="split-theorie"><h3>30%</h3><p>Théorie</p></div>
     </div>
 
     <div class="methode-grid reveal">
@@ -650,27 +672,27 @@
 
     <div class="publics-grid reveal">
       <div class="pub-card">
-        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=120&h=120&fit=crop&crop=faces" alt="Salarié en formation continue">
+        <span class="avatar avatar-md"><img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=120&h=120&fit=crop&crop=faces" alt="Salarié en formation continue"></span>
         <span>Salariés en formation continue</span>
       </div>
       <div class="pub-card">
-        <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=120&h=120&fit=crop&crop=faces" alt="Demandeur d'emploi">
+        <span class="avatar avatar-md"><img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=120&h=120&fit=crop&crop=faces" alt="Demandeur d'emploi"></span>
         <span>Demandeurs d'emploi</span>
       </div>
       <div class="pub-card">
-        <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=120&h=120&fit=crop&crop=faces" alt="Entrepreneur indépendant">
+        <span class="avatar avatar-md"><img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=120&h=120&fit=crop&crop=faces" alt="Entrepreneur indépendant"></span>
         <span>Entrepreneurs & indépendants</span>
       </div>
       <div class="pub-card">
-        <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=120&h=120&fit=crop&crop=faces" alt="Étudiant">
+        <span class="avatar avatar-md"><img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=120&h=120&fit=crop&crop=faces" alt="Étudiant"></span>
         <span>Étudiants</span>
       </div>
       <div class="pub-card">
-        <img src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=120&h=120&fit=crop&crop=faces" alt="Personne en reconversion">
+        <span class="avatar avatar-md"><img src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=120&h=120&fit=crop&crop=faces" alt="Personne en reconversion"></span>
         <span>Personnes en reconversion</span>
       </div>
       <div class="pub-card">
-        <img src="https://images.unsplash.com/photo-1556157382-97eda2d62296?w=120&h=120&fit=crop&crop=faces" alt="Entreprise">
+        <span class="avatar avatar-md"><img src="https://images.unsplash.com/photo-1556157382-97eda2d62296?w=120&h=120&fit=crop&crop=faces" alt="Entreprise"></span>
         <span>Entreprises (formation équipes)</span>
       </div>
     </div>
@@ -818,6 +840,29 @@
 </footer>
 
 <script>
+  // Robust image fallback: if any image fails to load, strip its alt text
+  // and let the CSS gradient background show through instead of broken-image UI.
+  // Checks naturalWidth immediately too, since the error event may have
+  // already fired before this listener attaches (slow scripts, fast failures).
+  function markBroken(img){
+    img.classList.add('img-error');
+    img.alt = '';
+  }
+  document.querySelectorAll('img').forEach(img => {
+    if(img.complete && img.naturalWidth === 0){
+      markBroken(img);
+    } else {
+      img.addEventListener('error', () => markBroken(img), { once: true });
+    }
+  });
+  // Catch-all sweep: some failures resolve slightly after the listener
+  // attaches but before the network truly settles. Re-check once, shortly after load.
+  window.setTimeout(() => {
+    document.querySelectorAll('img').forEach(img => {
+      if(img.naturalWidth === 0) markBroken(img);
+    });
+  }, 2500);
+
   const header = document.getElementById('header');
   window.addEventListener('scroll', () => {
     header.classList.toggle('scrolled', window.scrollY > 40);
@@ -851,6 +896,9 @@
   } else {
     revealEls.forEach(el=>el.classList.add('in'));
   }
+  // Safety net: whatever happens elsewhere in this script, content must
+  // never stay invisible. Force reveal after 4s no matter what.
+  window.setTimeout(()=>{ revealEls.forEach(el=>el.classList.add('in')); }, 4000);
 
   const burger = document.getElementById('burger');
   burger.addEventListener('click', ()=>{
