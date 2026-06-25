@@ -196,12 +196,33 @@
   .valeurs::before{content:'';position:absolute;top:-15%;right:-8%;width:480px;height:480px;border-radius:50%;background:radial-gradient(circle, rgba(199,154,69,0.18), transparent 70%);}
   .valeurs .tag{color:var(--gold-deep);}
   .valeurs .sec-title{color:var(--navy);}
-  .valeurs-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:54px;position:relative;z-index:1;}
-  .vcard{background:rgba(255,255,255,0.55);border:1px solid rgba(1,25,54,0.08);border-radius:20px;padding:34px 28px;transition:transform .35s var(--ease), background .35s var(--ease);}
-  .vcard:hover{transform:translateY(-6px);background:var(--white);}
-  .vcard .vnum{font-family:'Bebas Neue';font-size:13px;color:var(--gold-deep);letter-spacing:0.08em;}
-  .vcard h3{font-family:'Archivo Black';font-size:20px;margin:14px 0 10px;color:var(--navy);text-transform:none;letter-spacing:-0.01em;}
-  .vcard p{font-size:14px;color:#445;line-height:1.6;}
+  /* Asymmetric pillars: one featured + five in a tight list */
+  .pillars-layout{display:grid;grid-template-columns:0.95fr 1.05fr;gap:22px;margin-top:54px;position:relative;z-index:1;align-items:stretch;}
+  .pillar-feature{
+    background:var(--navy);color:var(--white);border-radius:24px;padding:44px 38px;
+    display:flex;flex-direction:column;justify-content:flex-end;position:relative;overflow:hidden;min-height:420px;
+  }
+  .pillar-feature::before{
+    content:'';position:absolute;top:-30%;right:-20%;width:260px;height:260px;border-radius:50%;
+    background:radial-gradient(circle, rgba(199,154,69,0.35), transparent 70%);
+  }
+  .pillar-feature .vnum{font-family:'Bebas Neue';font-size:14px;color:var(--gold-soft);letter-spacing:0.1em;position:relative;z-index:1;}
+  .pillar-feature h3{font-family:'Archivo Black';font-size:32px;margin:16px 0 14px;color:var(--white);text-transform:none;letter-spacing:-0.015em;line-height:1.05;position:relative;z-index:1;}
+  .pillar-feature p{font-size:15.5px;color:rgba(234,242,239,0.78);line-height:1.6;max-width:36ch;position:relative;z-index:1;}
+  .pillar-feature .big-mark{
+    position:absolute;bottom:-30px;right:-10px;font-family:'Bebas Neue';font-size:200px;color:rgba(255,255,255,0.04);
+    line-height:1;z-index:0;
+  }
+
+  .pillar-list{display:flex;flex-direction:column;gap:1px;background:rgba(1,25,54,0.08);border-radius:24px;overflow:hidden;}
+  .pillar-row{
+    background:rgba(255,255,255,0.6);padding:24px 30px;display:grid;grid-template-columns:54px 1fr;gap:20px;align-items:start;
+    transition:background .3s var(--ease);
+  }
+  .pillar-row:hover{background:var(--white);}
+  .pillar-row .vnum{font-family:'Bebas Neue';font-size:13px;color:var(--gold-deep);letter-spacing:0.06em;padding-top:3px;}
+  .pillar-row h3{font-family:'Archivo Black';font-size:16.5px;margin-bottom:6px;color:var(--navy);text-transform:none;letter-spacing:-0.01em;}
+  .pillar-row p{font-size:13.5px;color:#445;line-height:1.55;}
 
   /* ============ VISAGES / RÉVÉLATEUR DE TALENT ============ */
   .visages{background:var(--off);}
@@ -328,7 +349,8 @@
     .hero-grid{grid-template-columns:1fr;}
     .hero-visual{height:360px;margin-top:16px;}
     .manifesto-grid{grid-template-columns:1fr;gap:32px;}
-    .valeurs-grid{grid-template-columns:1fr 1fr;}
+    .pillars-layout{grid-template-columns:1fr;}
+    .pillar-feature{min-height:280px;}
     .vis-grid{grid-template-columns:1fr 1fr;}
     .vis-card.big{grid-row:span 1;}
     .dom-cards{grid-template-columns:1fr 1fr;}
@@ -341,7 +363,7 @@
   }
   @media (max-width: 600px){
     section{padding:76px 0;}
-    .valeurs-grid{grid-template-columns:1fr;}
+    .pillar-row{grid-template-columns:36px 1fr;padding:20px 22px;}
     .vis-grid{grid-template-columns:1fr 1fr;}
     .dom-cards{grid-template-columns:1fr;}
     .publics-grid{grid-template-columns:1fr;}
@@ -471,38 +493,37 @@
 <section class="valeurs" id="valeurs">
   <div class="container">
     <span class="tag reveal">Notre ADN</span>
-    <h2 class="sec-title reveal">Quatre piliers. <span class="serif-accent">Aucun compromis.</span></h2>
+    <h2 class="sec-title reveal">Six piliers. <span class="serif-accent">Un seul qui change tout.</span></h2>
 
-    <div class="valeurs-grid reveal">
-      <div class="vcard">
-        <span class="vnum">01 / ACTION</span>
+    <div class="pillars-layout reveal">
+      <div class="pillar-feature">
+        <span class="big-mark">01</span>
+        <span class="vnum">01 / LE PILIER CENTRAL</span>
         <h3>Excellence par l'action</h3>
-        <p>Une compétence ne se valide pas en théorie. Elle se prouve sur le terrain, en situation réelle.</p>
+        <p>Une compétence ne se valide pas en théorie. Elle se prouve sur le terrain, en situation réelle — c'est le principe qui structure tout le reste.</p>
       </div>
-      <div class="vcard">
-        <span class="vnum">02 / NIVEAU</span>
-        <h3>Excellence pédagogique</h3>
-        <p>Des méthodes modernes et exigeantes, pensées pour produire un impact qu'on peut mesurer.</p>
-      </div>
-      <div class="vcard">
-        <span class="vnum">03 / TERRAIN</span>
-        <h3>Professionnalisation</h3>
-        <p>Des contenus connectés aux réalités et aux attentes concrètes des entreprises, pas à un programme figé.</p>
-      </div>
-      <div class="vcard">
-        <span class="vnum">04 / RUPTURE</span>
-        <h3>Innovation permanente</h3>
-        <p>Neuro-training, gamification, intelligence collective. On forme avec les outils d'aujourd'hui, pas d'hier.</p>
-      </div>
-      <div class="vcard">
-        <span class="vnum">05 / HUMAIN</span>
-        <h3>Bienveillance exigeante</h3>
-        <p>Un accompagnement individualisé, dans un cadre respectueux, sans jamais baisser le niveau d'ambition.</p>
-      </div>
-      <div class="vcard">
-        <span class="vnum">06 / OUVERT</span>
-        <h3>Accessibilité</h3>
-        <p>Le talent ne demande pas de diplôme. Nos formations sont pensées pour tous, y compris en situation de handicap.</p>
+
+      <div class="pillar-list">
+        <div class="pillar-row">
+          <span class="vnum">02</span>
+          <div><h3>Excellence pédagogique</h3><p>Des méthodes modernes et exigeantes, pensées pour un impact qu'on peut mesurer.</p></div>
+        </div>
+        <div class="pillar-row">
+          <span class="vnum">03</span>
+          <div><h3>Professionnalisation</h3><p>Des contenus connectés aux réalités des entreprises, pas à un programme figé.</p></div>
+        </div>
+        <div class="pillar-row">
+          <span class="vnum">04</span>
+          <div><h3>Innovation permanente</h3><p>Neuro-training, gamification, intelligence collective. On forme avec les outils d'aujourd'hui.</p></div>
+        </div>
+        <div class="pillar-row">
+          <span class="vnum">05</span>
+          <div><h3>Bienveillance exigeante</h3><p>Un accompagnement individualisé, sans jamais baisser le niveau d'ambition.</p></div>
+        </div>
+        <div class="pillar-row">
+          <span class="vnum">06</span>
+          <div><h3>Accessibilité</h3><p>Le talent ne demande pas de diplôme — nos formations sont pensées pour tous.</p></div>
+        </div>
       </div>
     </div>
   </div>
@@ -808,7 +829,7 @@
       dot.style.left = e.clientX + 'px';
       dot.style.top = e.clientY + 'px';
     });
-    document.querySelectorAll('a, button, .dom-card, .vcard, .vis-card, .pub-card').forEach(el=>{
+    document.querySelectorAll('a, button, .dom-card, .pillar-feature, .pillar-row, .vis-card, .pub-card').forEach(el=>{
       el.addEventListener('mouseenter', ()=>{ dot.style.width='26px'; dot.style.height='26px'; });
       el.addEventListener('mouseleave', ()=>{ dot.style.width='10px'; dot.style.height='10px'; });
     });
